@@ -44,13 +44,6 @@ npm run dev:all
 - `src/components/` — UI components (listing, detail, editor, header/footer, spinner, **ErrorBoundary**).
 - `server/` — Express API, SQLite init/seed (`db.js`, `db.json`), routes in `index.js`.
 
-## TODO / Next Steps
-- Finish Figma parity on spacing/typography/colors and add component-level transitions.
-- Add skeleton loaders and route-level error boundaries with retry actions.
-- Add schema-based client-side form validation (Zod) and image URL preview.
-- Accessibility pass (focus styles, keyboard nav in modals).
-- Tests (unit + component + happy-path E2E).
-
 ## Deployment
 Backend (Render/Railway):
 - Set `PORT=3001` (default) and persist SQLite volume.
