@@ -1,0 +1,94 @@
+{
+  "products": [
+    {
+      "id": 1,
+      "name": "Modern Wooden Chair",
+      "category": "Furniture",
+      "price": 89.99,
+      "rating": 4.5,
+      "description": "A stylish and ergonomic wooden chair made from sustainable oak with a comfortable curved backrest and smooth finish. Perfect for dining rooms or home offices.",
+      "imageUrl": "https://images.unsplash.com/photo-1648994517760-19afc8c7ba00?q=80&w=774&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    },
+    {
+      "id": 2,
+      "name": "Minimalist Desk Lamp",
+      "category": "Lighting",
+      "price": 29.99,
+      "rating": 4.1,
+      "description": "This sleek desk lamp features an adjustable arm, warm LED light and touch-sensitive controls. Ideal for late-night study or office work.",
+      "imageUrl": "https://images.unsplash.com/photo-1621447980929-6638614633c8?q=80&w=872&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    },
+    {
+      "id": 3,
+      "name": "Compact Bluetooth Speaker",
+      "category": "Electronics",
+      "price": 54.95,
+      "rating": 4.7,
+      "description": "A portable speaker with high-fidelity sound, long battery life and waterproof design. Connect via Bluetooth to play your favorite tunes anywhere.",
+      "imageUrl": "https://images.unsplash.com/photo-1705090212627-004b20f6a0fb?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    },
+    {
+      "id": 4,
+      "name": "Eco-Friendly Notebook",
+      "category": "Stationery",
+      "price": 9.5,
+      "rating": 4.3,
+      "description": "A 120-page notebook made from recycled paper. Features a sturdy cover and dotted grid pages for sketches, notes or journaling.",
+      "imageUrl": "https://images.unsplash.com/photo-1692158960358-e1d042390091?q=80&w=2670&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    },
+    {
+      "id": 5,
+      "name": "Stainless Steel Water Bottle",
+      "category": "Accessories",
+      "price": 24.0,
+      "rating": 4.8,
+      "description": "Keep your drinks cold or hot for hours with this insulated stainless steel bottle. Comes with a leak-proof cap and a carry handle.",
+      "imageUrl": "https://images.unsplash.com/photo-1602143407151-7111542de6e8?q=80&w=774&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    },
+    {
+      "id": 6,
+      "name": "Wireless Headphones",
+      "category": "Electronics",
+      "price": 129.99,
+      "rating": 4.6,
+      "description": "Experience immersive sound with these comfortable over-ear headphones. Features noise-canceling technology and 20-hour battery life.",
+      "imageUrl": "https://images.unsplash.com/photo-1612858249937-1cc0852093dd?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    },
+    {
+      "id": 7,
+      "name": "Bamboo Cutting Board",
+      "category": "Kitchen",
+      "price": 17.99,
+      "rating": 4.4,
+      "description": "A durable cutting board made from 100% bamboo. Naturally antimicrobial and gentle on your knives. Perfect for chopping vegetables or meat.",
+      "imageUrl": "https://images.unsplash.com/photo-1662490881538-dc9419784bc3?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    },
+    {
+      "id": 8,
+      "name": "Organic Cotton T-Shirt",
+      "category": "Apparel",
+      "price": 25.0,
+      "rating": 4.2,
+      "description": "Soft and breathable t-shirt made from organic cotton. A classic crew neck design available in multiple colors.",
+      "imageUrl": "https://images.unsplash.com/photo-1643286131725-5e0ad3b3ca02?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    },
+    {
+      "id": 9,
+      "name": "Ceramic Planter Set",
+      "category": "Home Decor",
+      "price": 34.95,
+      "rating": 4.5,
+      "description": "A set of three handcrafted ceramic planters with drainage holes. Ideal for succulents, herbs or small plants. Comes in three complementary colors.",
+      "imageUrl": "https://images.unsplash.com/photo-1757904257451-cda705bc9dd8?q=80&w=1740&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    },
+    {
+      "id": 10,
+      "name": "Portable Laptop Stand",
+      "category": "Accessories",
+      "price": 39.99,
+      "rating": 4.6,
+      "description": "An adjustable aluminum laptop stand that elevates your laptop for better ergonomics. Lightweight, foldable and fits most laptop sizes.",
+      "imageUrl": "https://images.unsplash.com/photo-1588588256687-11f32a4a8852?q=80&w=774&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+    }
+  ]
+}

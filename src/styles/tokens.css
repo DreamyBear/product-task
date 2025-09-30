@@ -1,0 +1,49 @@
+:root {
+  --color-bg: #0f0f0f;
+  --color-surface: #171616;
+  --color-surface-2: #1f1f1f;
+  --color-border: rgba(255, 255, 255, 0.06);
+
+  --color-text: #fcf9f2;
+  --color-muted: #696969;
+  --color-accent: #f9d03f;
+  --color-accent-strong: #f0c12a;
+  --color-danger: #ff6b6b;
+  --color-success: #39d98a;
+
+  --shadow-1: 0 16px 40px rgba(0, 0, 0, 0.45);
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+
+  --radius-1: 12px;
+  --radius-2: 18px;
+  --radius-3: 24px;
+
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, Segoe UI, Inter, Roboto,
+    "Helvetica Neue", Arial;
+  --text-xs: 12px;
+  --text-sm: 14px;
+  --text-md: 16px;
+  --text-lg: 18px;
+  --text-xl: 24px;
+
+  --container: 1200px;
+  --grid-gap: 16px;
+
+  --bp-sm: 480px;
+  --bp-md: 768px;
+  --bp-lg: 1024px;
+
+  --bg-deep: #0f0f0f;
+  --bg-soft: #121111;
+  --bg-surface-warm: #171616;
+  --bg-glaze: #1f1f1f;
+  --glint: rgba(249, 209, 63, 0.555);
+}
