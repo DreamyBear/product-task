@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 @import "./tokens.css";
 
 * {
@@ -12,12 +14,13 @@ body {
   margin: 0;
   font-family: var(--font-sans);
   color: var(--color-text);
-  background: var(--bg-deep);
+  background: #0f0f0f; /* fallback */
   position: relative;
   min-height: 100%;
   overflow-x: hidden;
 }
 
+/* Animated gradient "pulse" layer */
 body::before {
   content: "";
   position: fixed;
@@ -26,27 +29,42 @@ body::before {
 
   background:
     radial-gradient(
-      1100px 700px at 18% -8%,
-      var(--bg-soft) 0%,
+      1000px 700px at 20% 0%,
+      #c4a4325b 0%,
       rgba(18, 17, 17, 0) 60%
     ),
     radial-gradient(
-      900px 650px at 105% 8%,
-      var(--bg-surface-warm) 0%,
+      900px 650px at 90% 100%,
+      #74753580 0%,
       rgba(23, 22, 22, 0) 68%
     ),
-    conic-gradient(
-      from 220deg at 62% 42%,
-      var(--bg-deep) 0 28%,
-      var(--bg-surface-warm) 28% 56%,
-      var(--bg-deep) 56% 100%
+    linear-gradient(
+      90deg,
+      rgba(192, 79, 79, 0) 0%,
+      rgba(0, 0, 0, 0.35) 60%,
+      rgba(0, 0, 0, 0.55) 100%
     ),
-    linear-gradient(180deg, var(--bg-deep) 0%, var(--bg-soft) 100%);
+    #0f0f0f;
 
   background-blend-mode: normal, normal, soft-light, normal;
-  filter: saturate(1.03);
-  animation: waterFlow 10s ease-in-out infinite alternate;
-  will-change: transform;
+  animation: pulseBg 18s ease-in-out infinite alternate;
+  will-change: transform, opacity;
+  filter: saturate(1.05);
+}
+
+@keyframes pulseBg {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.02);
+    opacity: 0.95;
+  }
+  100% {
+    transform: scale(1.04);
+    opacity: 1;
+  }
 }
 
 body::after {
@@ -54,52 +72,30 @@ body::after {
   position: fixed;
   inset: 0;
   z-index: -1;
-  pointer-events: none;
-
   background:
     radial-gradient(
-      260px 160px at 28% 22%,
-      var(--glint) 0,
-      rgba(249, 208, 63, 0) 70%
+      300px 200px at 25% 70%,
+      rgba(249, 209, 63, 0.63),
+      transparent 70%
     ),
     radial-gradient(
-      320px 200px at 86% 14%,
-      rgba(249, 208, 63, 0.08) 0,
-      rgba(249, 208, 63, 0) 75%
+      400px 240px at 75% 15%,
+      rgba(255, 218, 82, 0.808),
+      transparent 80%
     );
-
-  opacity: 0.08;
-  filter: blur(8px);
-  animation: glimmer 6s ease-in-out infinite alternate;
+  opacity: 0.1;
+  animation: glimmer 25s ease-in-out infinite alternate;
   will-change: transform, opacity;
 }
 
-@keyframes waterFlow {
-  0% {
-    transform: translate3d(0%, 0%, 0) scale(1);
-  }
-  50% {
-    transform: translate3d(-1.2%, -0.6%, 0) scale(1.015);
-  }
-  100% {
-    transform: translate3d(1.2%, 0.8%, 0) scale(1.03);
-  }
-}
 @keyframes glimmer {
   0% {
     transform: translateY(0%);
-    opacity: 0.06;
+    opacity: 0.08;
   }
   100% {
-    transform: translateY(1.2%);
-    opacity: 0.1;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  body::before,
-  body::after {
-    animation: none;
+    transform: translateY(1.5%);
+    opacity: 0.12;
   }
 }
 
@@ -281,4 +277,43 @@ input[type="number"]::-webkit-inner-spin-button {
 }
 input[type="number"] {
   -moz-appearance: textfield;
+}
+
+/* Editor two-column layout + sticky preview */
+.editor-layout {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: 1fr;
+}
+@media (min-width: 900px) {
+  .editor-layout {
+    grid-template-columns: 1.2fr 0.8fr;
+  }
+  .preview-sticky {
+    position: sticky;
+    top: 20px;
+  }
+}
+
+.product-fade-enter {
+  opacity: 0;
+  transform: translateY(10px);
+}
+.product-fade-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 250ms ease,
+    transform 250ms ease;
+}
+.product-fade-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+.product-fade-exit-active {
+  opacity: 0;
+  transform: translateY(-10px);
+  transition:
+    opacity 200ms ease,
+    transform 200ms ease;
 }

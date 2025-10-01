@@ -4,6 +4,7 @@ import ProductDetail from "./components/ProductDetail";
 import ProductEditor from "./components/ProductEditor";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import GoToTop from "@/components/GoToTop";
 
 export default function App() {
   return (
@@ -25,6 +26,7 @@ export default function App() {
         </Routes>
       </main>
       <Footer />
+      <GoToTop />
     </div>
   );
 }

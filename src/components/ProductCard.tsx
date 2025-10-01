@@ -1,9 +1,38 @@
 import { Link } from "react-router-dom";
 import type { Product } from "@/types/product";
+import { motion, type MotionProps } from "framer-motion";
 
-export default function ProductCard({ p }: { p: Product }) {
+type Props = {
+  p: Product;
+  preview?: boolean;
+  motionProps?: MotionProps;
+};
+
+const MotionLink = motion(Link);
+
+export default function ProductCard({
+  p,
+  preview = false,
+  motionProps,
+}: Props) {
+  if (preview) {
+    return (
+      <motion.div className="card" {...motionProps}>
+        <CardInner p={p} preview />
+      </motion.div>
+    );
+  }
+
   return (
-    <Link to={`/products/${p.id}`} className="card">
+    <MotionLink to={`/products/${p.id}`} className="card" {...motionProps}>
+      <CardInner p={p} />
+    </MotionLink>
+  );
+}
+
+function CardInner({ p, preview = false }: { p: Product; preview?: boolean }) {
+  return (
+    <>
       <div className="aspect-4-3">
         {p.imageUrl ? (
           <img
@@ -49,18 +78,22 @@ export default function ProductCard({ p }: { p: Product }) {
               width: 45,
               height: 45,
               borderRadius: "50%",
-              background: "var(--color-accent)",
-              color: "#1f1f1f",
+              background: preview
+                ? "rgba(249, 208, 63, 0.4)"
+                : "var(--color-accent)",
+              color: preview ? "#555" : "#1f1f1f",
               display: "grid",
               placeItems: "center",
               fontWeight: 800,
-              fontSize: 30
+              fontSize: 30,
+              opacity: preview ? 0.6 : 1,
+              cursor: preview ? "not-allowed" : "pointer",
             }}
           >
             +
           </span>
         </div>
       </div>
-    </Link>
+    </>
   );
 }

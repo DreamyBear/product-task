@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 type Props = {
   message?: string | null;
   onClose?: () => void;
-  /** milliseconds to auto-dismiss (default: 4000). Set 0 to disable */
   autoMs?: number;
 };
 
@@ -14,17 +13,15 @@ export default function Banner({ message, onClose, autoMs = 4000 }: Props) {
     setVisible(Boolean(message));
   }, [message]);
 
-  // Auto-dismiss after autoMs
   useEffect(() => {
     if (!message || autoMs <= 0) return;
     const t = setTimeout(() => setVisible(false), autoMs);
     return () => clearTimeout(t);
   }, [message, autoMs]);
 
-  // After fade-out, call onClose to actually unmount (clear parent state)
   useEffect(() => {
     if (!visible && message) {
-      const t = setTimeout(() => onClose?.(), 300); // match CSS transition
+      const t = setTimeout(() => onClose?.(), 300); 
       return () => clearTimeout(t);
     }
   }, [visible, message, onClose]);

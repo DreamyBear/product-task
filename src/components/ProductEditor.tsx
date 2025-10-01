@@ -2,11 +2,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useMemo, useState } from "react";
 import { z } from "zod";
 import { useProduct, useProducts } from "@/hooks/useProducts";
+import ProductCard from "@/components/ProductCard";
+import type { Product } from "@/types/product";
 
+/** Zod schema (v4-friendly): coerce price from string -> number */
 const FormSchema = z.object({
   name: z.string().min(1, "Name is required"),
   category: z.string().min(1, "Category is required"),
-  // Coerce strings → number; invalid strings become NaN and fail validation
   price: z.coerce
     .number()
     .refine((v) => Number.isFinite(v), { message: "Price must be a number" })
@@ -29,6 +31,7 @@ export default function ProductEditor({ mode }: { mode: Mode }) {
   const { create, update } = useProducts();
   const navigate = useNavigate();
 
+  // Initial state from existing product (edit) or blanks (create)
   const initial: FormData = useMemo(
     () =>
       isCreate
@@ -48,20 +51,19 @@ export default function ProductEditor({ mode }: { mode: Mode }) {
     {}
   );
   const [touched, setTouched] = useState<Record<string, boolean>>({});
-  const [imgOk, setImgOk] = useState<boolean | null>(null);
 
   useEffect(() => {
     setForm(initial);
     setErrors({});
     setTouched({});
-    setImgOk(null);
   }, [initial]);
 
+  // Form helpers
   const onChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setForm((f) => ({ ...f, [name]: name === "price" ? value : value }));
+    setForm((f) => ({ ...f, [name]: value }));
   };
 
   const validate = (draft: FormData) => {
@@ -82,23 +84,28 @@ export default function ProductEditor({ mode }: { mode: Mode }) {
 
   const onBlur = (e: React.FocusEvent<any>) => {
     setTouched((t) => ({ ...t, [e.target.name]: true }));
-    validate({ ...form, price: Number(form.price) });
+    validate(form);
+  };
+
+  const focusFirstError = () => {
+    const first = (Object.keys(errors) as (keyof FormData)[])[0];
+    if (first) {
+      const el = document.querySelector<HTMLInputElement | HTMLTextAreaElement>(
+        `[name="${String(first)}"]`
+      );
+      el?.focus();
+    }
   };
 
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const payload: FormData = { ...form, price: Number(form.price) };
-    if (!validate(payload)) {
-      // focus first error
-      const first = Object.keys(errors)[0] as keyof typeof errors;
-      if (first)
-        document
-          .querySelector<
-            HTMLInputElement | HTMLTextAreaElement
-          >(`[name="${first}"]`)
-          ?.focus();
+
+    if (!validate(form)) {
+      focusFirstError();
       return;
     }
+
+    const payload = { ...form, price: Number(form.price) };
 
     if (isCreate) {
       await create.mutateAsync(payload as any);
@@ -115,39 +122,32 @@ export default function ProductEditor({ mode }: { mode: Mode }) {
     }
   };
 
-  // image probe
-  useEffect(() => {
-    if (!form.imageUrl) {
-      setImgOk(null);
-      return;
-    }
-    let cancelled = false;
-    const img = new Image();
-    img.onload = () => !cancelled && setImgOk(true);
-    img.onerror = () => !cancelled && setImgOk(false);
-    img.src = form.imageUrl;
-    return () => {
-      cancelled = true;
-    };
-  }, [form.imageUrl]);
-
   const pending = create.isPending || update.isPending;
 
-  return (
-    <form className="card" onSubmit={onSubmit} style={{ padding: 16 }}>
-      <h2 style={{ marginTop: 0 }}>
-        {isCreate ? "Add Product" : "Edit Product"}
-      </h2>
+  // ---- LIVE PREVIEW (right side) ----
+  // Build a Product-shaped object from the current form for ProductCard
+  const previewProduct: Product = {
+    id: isCreate ? -1 : pid,
+    name: form.name || "Product name",
+    category: form.category || "Category",
+    price: Number(form.price) || 0,
+    description:
+      form.description || "Short description will appear on the details page.",
+    imageUrl: form.imageUrl || "", // ProductCard shows a skeleton if empty
+  };
 
-      {/* Grid */}
-      <div
-        style={{
-          display: "grid",
-          gap: 16,
-          gridTemplateColumns: "1fr",
-        }}
-      >
-        {/* Left: fields */}
+  return (
+    <form
+      className="editor-layout"
+      onSubmit={onSubmit}
+      style={{ marginTop: 8 }}
+    >
+      {/* Left: form card */}
+      <div className="card" style={{ padding: 16 }}>
+        <h2 style={{ marginTop: 0 }}>
+          {isCreate ? "Add Product" : "Edit Product"}
+        </h2>
+
         <div style={{ display: "grid", gap: 12 }}>
           <Field
             label="Name"
@@ -170,9 +170,18 @@ export default function ProductEditor({ mode }: { mode: Mode }) {
             name="price"
             type="number"
             step="0.01"
+            inputMode="decimal"
             value={String(form.price)}
             onChange={onChange}
             onBlur={onBlur}
+            // prevent wheel/arrow increments (you asked for this earlier)
+            onWheel={(e) => e.currentTarget.blur()}
+            onKeyDown={(e) => {
+              if (
+                ["ArrowUp", "ArrowDown", "PageUp", "PageDown"].includes(e.key)
+              )
+                e.preventDefault();
+            }}
             error={touched.price && errors.price}
           />
           <Field
@@ -194,67 +203,49 @@ export default function ProductEditor({ mode }: { mode: Mode }) {
           />
         </div>
 
-        {/* Right: image preview */}
-        <div className="card" style={{ padding: 12 }}>
-          <div className="aspect-4-3">
-            {form.imageUrl ? (
-              imgOk === null ? (
-                <div className="skel" />
-              ) : imgOk ? (
-                <img
-                  src={form.imageUrl}
-                  alt="Preview"
-                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
-                />
-              ) : (
-                <div
-                  style={{
-                    display: "grid",
-                    placeItems: "center",
-                    color: "var(--color-muted)",
-                    border: "1px dashed var(--color-border)",
-                  }}
-                >
-                  Invalid image URL
-                </div>
-              )
-            ) : (
-              <div className="skel" />
-            )}
-          </div>
-          <p className="help" style={{ marginTop: 8 }}>
-            Paste an image URL to preview it here.
-          </p>
+        {/* Actions */}
+        <div
+          style={{ display: "flex", gap: 8, marginTop: 16, flexWrap: "wrap" }}
+        >
+          <button
+            type="button"
+            className="btn btn-ghost"
+            onClick={() => history.back()}
+            disabled={pending}
+          >
+            Cancel
+          </button>
+          <button className="btn" type="submit" disabled={pending}>
+            {pending ? "Saving…" : "Save"}
+          </button>
         </div>
       </div>
 
-      {/* Actions */}
-      <div style={{ display: "flex", gap: 8, marginTop: 16, flexWrap: "wrap" }}>
-        <button
-          type="button"
-          className="btn btn-ghost"
-          onClick={() => history.back()}
-          disabled={pending}
-        >
-          Cancel
-        </button>
-        <button className="btn" type="submit" disabled={pending}>
-          {pending ? "Saving…" : "Save"}
-        </button>
+      {/* Right: Live preview (sticky on desktop) */}
+      <div className="preview-sticky" aria-live="polite">
+        <div className="help" style={{ marginBottom: 8 }}>
+          Live preview
+        </div>
+        <ProductCard p={previewProduct} preview />{" "}
       </div>
     </form>
   );
 }
 
+/* ---------- Field components ---------- */
+
 function Field(props: {
   label: string;
   name: keyof FormData;
   value: any;
-  onChange: any;
-  onBlur: any;
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
+  onBlur: React.FocusEventHandler<HTMLInputElement>;
   type?: string;
   step?: string;
   placeholder?: string;
+  inputMode?: React.HTMLAttributes<HTMLInputElement>["inputMode"];
+  onWheel?: React.WheelEventHandler<HTMLInputElement>;
+  onKeyDown?: React.KeyboardEventHandler<HTMLInputElement>;
   error?: string | false;
 }) {
   const { label, name, error, ...rest } = props;
@@ -283,12 +274,13 @@ function Field(props: {
     </label>
   );
 }
+
 function TextArea(props: {
   label: string;
   name: keyof FormData;
   value: string;
-  onChange: any;
-  onBlur: any;
+  onChange: React.ChangeEventHandler<HTMLTextAreaElement>;
+  onBlur: React.FocusEventHandler<HTMLTextAreaElement>;
   error?: string | false;
 }) {
   const { label, name, error, ...rest } = props;

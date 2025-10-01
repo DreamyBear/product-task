@@ -26,7 +26,7 @@ npm run dev:all
 # API:      http://localhost:3001/api
 ```
 
-> Frontend uses `VITE_API_URL` from `.env`. Defaults to `http://localhost:3001/api`.
+> Frontend uses `VITE_API_URL` from `.env`.
 
 ## Scripts
 - `npm run dev` — Vite dev server

@@ -7,11 +7,8 @@ export default function Header() {
         className="container row wrap"
         style={{ justifyContent: "space-between" }}
       >
-        <h1 style={{ margin: 0, fontSize: 20 }}>SFD Catalog</h1>
-        {/* <nav className="row" style={{ gap: 16 }}>
-          <NavLink to="/products">Products</NavLink>
-          <NavLink to="/products/new">Add Product</NavLink>
-        </nav> */}
+        <h1 style={{ margin: 0, fontSize: 20 }}>Product Manager</h1>
+      
       </div>
     </header>
   );

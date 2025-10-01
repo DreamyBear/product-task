@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { AnimatePresence } from "framer-motion";
+
 import { useProducts } from "@/hooks/useProducts";
-import ProductGrid from "@/components/ProductGrid";
 import ProductCard from "@/components/ProductCard";
 import { ProductGridSkeleton } from "@/components/Skeletons";
 import EmptyState from "@/components/EmptyState";
@@ -13,7 +14,6 @@ export default function ProductsList() {
   const location = useLocation();
   const navigate = useNavigate();
 
-  // Read toast once from location.state, then clear it so it doesn't persist
   const [toast, setToast] = useState<string | null>(null);
   useEffect(() => {
     const st = (location.state as any) || {};
@@ -21,7 +21,6 @@ export default function ProductsList() {
       setToast(st.toast);
       navigate(location.pathname, { replace: true, state: {} });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const products = list.data ?? [];
@@ -69,7 +68,6 @@ export default function ProductsList() {
   return (
     <section style={{ padding: "20px 0" }}>
       <div className="container">
-        {/* Auto-dismissing banner (4s) with fade + manual close */}
         <Banner message={toast} onClose={() => setToast(null)} autoMs={4000} />
 
         <HeaderRow q={q} setQ={setQ} />
@@ -77,11 +75,23 @@ export default function ProductsList() {
         {filtered.length === 0 ? (
           <EmptyState />
         ) : (
-          <ProductGrid>
-            {filtered.map((p) => (
-              <ProductCard key={p.id} p={p} />
-            ))}
-          </ProductGrid>
+          <div className="grid">
+            <AnimatePresence initial={false}>
+              {filtered.map((p) => (
+                <ProductCard
+                  key={p.id}
+                  p={p}
+                  motionProps={{
+                    layout: true,
+                    initial: { opacity: 0.85, y: 0 }, 
+                    animate: { opacity: 1, y: 0 },
+                    exit: { opacity: 0, y: 0 }, 
+                    transition: { duration: 0.18, ease: "easeOut" }, 
+                  }}
+                />
+              ))}
+            </AnimatePresence>
+          </div>
         )}
       </div>
     </section>
