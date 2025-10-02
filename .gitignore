@@ -25,4 +25,5 @@ dist-ssr
 .env
 *.sqlite
 *.db
+*.zip
 server/data.sqlite
